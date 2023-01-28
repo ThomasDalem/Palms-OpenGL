@@ -2,7 +2,7 @@
 
 #include "OBJLoader.hpp"
 
-bool loadOBJ(const std::string& path, std::vector<Vertex> &vertices, std::vector<glm::vec3> &normals, std::vector<uint32_t> &indices)
+bool loadOBJ(const std::string& path, std::vector<Vertex> &vertices, std::vector<uint32_t> &indices)
 {
 	std::vector<glm::vec3> verticesPositions;
 	//std::vector<glm::vec2> verticesTexturesCoords;
@@ -78,12 +78,12 @@ bool loadOBJ(const std::string& path, std::vector<Vertex> &vertices, std::vector
 		}
 	}
 	vertices.resize(verticesPositions.size(), Vertex());
-	normals.resize(vertexNormalIndicies.size(), glm::vec3());
 	//texturesCoords.resize(vertexTextureCoordIndicies.size(), glm::vec2());
 	for (size_t i = 0; i < vertices.size(); i++) {
 		vertices[i].position = verticesPositions[i];
 		vertices[i].color = glm::vec3(1.0f, 1.0f, 1.0f);
-		normals[i] = verticesNormals[vertexNormalIndicies[i] - 1];
+		vertices[i].normal = verticesNormals[i];
+		//normals[i] = verticesNormals[vertexNormalIndicies[i] - 1];
 		//texturesCoords[i] = verticesTexturesCoords[vertexTextureCoordIndicies[i] - 1];
 	}
 

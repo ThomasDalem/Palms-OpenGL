@@ -12,6 +12,6 @@
 
 #include "Vertex.hpp"
 
-bool loadOBJ(const std::string& path, std::vector<Vertex>& vertices, std::vector<glm::vec3>& normals, std::vector<uint32_t>& indices);
+bool loadOBJ(const std::string& path, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);
 
 #endif // !OBJLOADER_HPP

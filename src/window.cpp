@@ -537,8 +537,8 @@ void Window::Run()
 
     ShowWindow(m_hWnd, SW_SHOW);
 
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
+    //glEnable(GL_CULL_FACE);
+    //glCullFace(GL_FRONT_AND_BACK);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LEQUAL);

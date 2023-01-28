@@ -10,10 +10,31 @@
 #include <camera.hpp>
 #include <renderer.hpp>
 
+#include <iostream>
+#include <fstream>
+#include <stdexcept>
+
 #include "OBJLoader.hpp"
 #include "Vertex.hpp"
 
 BEGIN_VISUALIZER_NAMESPACE
+
+std::string readFile(const std::string &filename)
+{
+    std::ifstream file(filename);
+
+    if (file.is_open() == false) {
+        std::cout << "Error: could not open file " << filename << std::endl;
+    }
+    std::string content = "";
+    std::string line = "";
+
+    while (!file.eof()) {
+        std::getline(file, line);
+        content.append(line + "\n");
+    }
+    return content;
+}
 
 bool Renderer::CompileShaders()
 {
@@ -26,28 +47,9 @@ bool Renderer::CompileShaders()
     GL_CALL(glAttachShader, m_ShaderProgram, fShader);
 
     {
-        char const* const vertexShader =
-            R"(#version 450 core
-
-layout(location = 0) in vec3 inWorldPos;
-layout(location = 1) in vec3 inColor;
-layout(location = 2) in vec3 inNormal;
-
-layout(location = 0) smooth out vec3 color;
-
-layout(std140, binding = 0) uniform Matrix
-{
-    mat4 modelViewProjection;
-};
-
-void main()
-{
-    color = inColor;
-    gl_Position = modelViewProjection * vec4(inWorldPos, 1.);
-}
-)";
-
-        GL_CALL(glShaderSource, vShader, 1, &vertexShader, nullptr);
+        std::string vertexShader = readFile("../../src/vertexShader.glsl");
+        const char *verShaderStr = vertexShader.c_str();
+        GL_CALL(glShaderSource, vShader, 1, &verShaderStr, nullptr);
 
         GL_CALL(glCompileShader, vShader);
 
@@ -67,20 +69,9 @@ void main()
             }
         }
 
-        char const* const fragmentShader =
-            R"(#version 450 core
-
-layout(location = 0) out vec4 outColor;
-
-layout(location = 0) smooth in vec3 color;
-
-void main()
-{
-    outColor = vec4(color, 1.0f);
-}
-)";
-
-        GL_CALL(glShaderSource, fShader, 1, &fragmentShader, nullptr);
+        std::string fragmentShader = readFile("../../src/fragmentShader.glsl");
+        const char* fragmentShaderStr = fragmentShader.c_str();
+        GL_CALL(glShaderSource, fShader, 1, &fragmentShaderStr, nullptr);
 
         GL_CALL(glCompileShader, fShader);
 
@@ -134,7 +125,7 @@ bool Renderer::Initialize()
     //std::vector<glm::vec2> textureCoordinates;
     std::vector<uint32_t> indices;
 
-    if (loadOBJ("../../res/palm.obj", vertices, normals, indices) == false) {
+    if (loadOBJ("../../res/palm.obj", vertices, indices) == false) {
         return false;
     }
 
