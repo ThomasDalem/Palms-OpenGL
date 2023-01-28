@@ -1,0 +1,35 @@
+# CMake generation dependency list for this directory.
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeCXXInformation.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeCommonLanguageInclude.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeGenericSystem.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeInitializeConfigs.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeLanguageInformation.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeRCInformation.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeSystemSpecificInformation.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/CMakeSystemSpecificInitialize.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Compiler/CMakeCommonCompilerMacros.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Compiler/MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Compiler/MSVC-CXX.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Compiler/MSVC.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/FindOpenGL.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/FindPackageMessage.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Platform/Windows-MSVC-C.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Platform/Windows-MSVC-CXX.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Platform/Windows-MSVC.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Platform/Windows.cmake
+C:/Program Files/CMake/share/cmake-3.25/Modules/Platform/WindowsPaths.cmake
+C:/Users/Thomas/Desktop/project/CMakeLists.txt
+C:/Users/Thomas/Desktop/project/build/CMakeFiles/3.25.1/CMakeCCompiler.cmake
+C:/Users/Thomas/Desktop/project/build/CMakeFiles/3.25.1/CMakeCXXCompiler.cmake
+C:/Users/Thomas/Desktop/project/build/CMakeFiles/3.25.1/CMakeRCCompiler.cmake
+C:/Users/Thomas/Desktop/project/build/CMakeFiles/3.25.1/CMakeSystem.cmake
+C:/Users/Thomas/Desktop/project/extern/cxxopts/lib/cmake/cxxopts/cxxopts-config-version.cmake
+C:/Users/Thomas/Desktop/project/extern/cxxopts/lib/cmake/cxxopts/cxxopts-config.cmake
+C:/Users/Thomas/Desktop/project/extern/cxxopts/lib/cmake/cxxopts/cxxopts-targets.cmake
+C:/Users/Thomas/Desktop/project/extern/glew/lib/cmake/glew/glewConfig-debug.cmake
+C:/Users/Thomas/Desktop/project/extern/glew/lib/cmake/glew/glewConfig-release.cmake
+C:/Users/Thomas/Desktop/project/extern/glew/lib/cmake/glew/glewConfig.cmake
+C:/Users/Thomas/Desktop/project/extern/glm/lib/cmake/glm/glmConfig.cmake
+C:/Users/Thomas/Desktop/project/extern/glm/lib/cmake/glm/glmConfigVersion.cmake

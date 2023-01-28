@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\Thomas\Desktop\project\build\CMakeFiles\f01cb6919768a3098612270c57d8a367\RERUN_CMAKE.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\Thomas\Desktop\project\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\Thomas\Desktop\project\build\CMakeFiles\RERUN_CMAKE" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{B5C721FB-478E-37B4-960D-FE002FA4D7EB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
