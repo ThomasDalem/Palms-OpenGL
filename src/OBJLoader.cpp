@@ -1,6 +1,24 @@
 #include <sstream>
+#include <unordered_map>
+#include <chrono>
 
 #include "OBJLoader.hpp"
+
+struct vInfos {
+	uint32_t vertexIndex;
+	uint32_t textureCoordIndex;
+	uint32_t normalIndex;
+};
+
+long findVertexIndex(vInfos& vertex, std::vector<vInfos>& vertices)
+{
+	for (int i = 0; i < vertices.size(); i++) {
+		if (vertices[i].vertexIndex == vertex.vertexIndex && vertices[i].normalIndex == vertex.normalIndex) {
+			return i;
+		}
+	}
+	return -1;
+}
 
 bool loadOBJ(const std::string& path, std::vector<Vertex> &vertices, std::vector<uint32_t> &indices)
 {
@@ -20,13 +38,16 @@ bool loadOBJ(const std::string& path, std::vector<Vertex> &vertices, std::vector
 		return false;
 	}
 
+	std::vector<vInfos> trios;
+
+	auto start = std::chrono::high_resolution_clock::now();
+
 	while (std::getline(inFile, line)) {
 		std::string prefix;
 
 		ss.clear();
 		ss.str(line);
 		ss >> prefix;
-
 		if (prefix == "v") {
 			glm::vec3 vertex;
 			ss >> vertex.x >> vertex.y >> vertex.z;
@@ -46,20 +67,18 @@ bool loadOBJ(const std::string& path, std::vector<Vertex> &vertices, std::vector
 			GLint tempInt = 0;
 			int counter = 0;
 			int indicesNbr = 0;
+			vInfos vertex;
 			while (ss >> tempInt) {
 				if (counter == 0) {
-					indices.push_back(tempInt - 1);
-					if (indicesNbr == 3) {
-						indices.push_back(indices[indices.size() - 4]);
-						indices.push_back(indices[indices.size() - 3]);
-					}
-					indicesNbr++;
+					vertex.vertexIndex = tempInt - 1;
 				}
 				else if (counter == 1) {
+					vertex.textureCoordIndex = tempInt - 1;
 					//vertexTextureCoordIndicies.push_back(tempInt);
 				}
 				else if (counter == 2) {
-					vertexNormalIndicies.push_back(tempInt);
+					vertex.normalIndex = tempInt - 1;
+					//vertexNormalIndicies.push_back(tempInt);
 				}
 
 				if (ss.peek() == '/') {
@@ -70,22 +89,38 @@ bool loadOBJ(const std::string& path, std::vector<Vertex> &vertices, std::vector
 					counter++;
 					ss.ignore(1, ' ');
 				}
+				else if (ss.eof()) {
+					counter++;
+				}
 
 				if (counter > 2) {
+					long index = findVertexIndex(vertex, trios);
+					if (index == -1) {
+						trios.push_back(vertex);
+						Vertex v;
+						v.position = verticesPositions[vertex.vertexIndex];
+						v.color = glm::vec3(0.f, 0.5f, 0.f);
+						v.normal = verticesNormals[vertex.normalIndex];
+						vertices.push_back(v);
+						indices.push_back(static_cast<uint32_t>(vertices.size() - 1));
+					}
+					else {
+						indices.push_back(index);
+					}
+					if (indicesNbr == 3) {
+						indices.push_back(indices[indices.size() - 4]);
+						indices.push_back(indices[indices.size() - 3]);
+					}
+					indicesNbr++;
 					counter = 0;
 				}
 			}
 		}
 	}
-	vertices.resize(verticesPositions.size(), Vertex());
-	//texturesCoords.resize(vertexTextureCoordIndicies.size(), glm::vec2());
-	for (size_t i = 0; i < vertices.size(); i++) {
-		vertices[i].position = verticesPositions[i];
-		vertices[i].color = glm::vec3(1.0f, 1.0f, 1.0f);
-		vertices[i].normal = verticesNormals[i];
-		//normals[i] = verticesNormals[vertexNormalIndicies[i] - 1];
-		//texturesCoords[i] = verticesTexturesCoords[vertexTextureCoordIndicies[i] - 1];
-	}
+	auto end = std::chrono::high_resolution_clock::now();
+
+	auto duration = duration_cast<std::chrono::microseconds>(end - start);
+	std::cout << "Duration: " << duration.count() << std::endl;
 
 	std::cout << "Loaded " << indices.size() << " indices" << std::endl;
 	std::cout << "Loaded " << vertices.size() << " vertices" << std::endl;

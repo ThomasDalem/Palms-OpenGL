@@ -31,11 +31,16 @@ public:
     void UpdateCamera();
 
 private:
+    struct UBOData {
+        glm::mat4 viewProjectionMatrix;
+        glm::vec3 cameraPos;
+    };
+
     GLuint m_UBO, m_VBO, m_IBO, m_VAO, m_ShaderProgram;
 
     uint32_t m_IndexCount;
 
-    glm::mat4* m_UBOData;
+    UBOData* m_UBOData = nullptr;
 
     std::shared_ptr<Camera> m_Camera;
     uint32_t m_ViewportWidth, m_ViewportHeight;

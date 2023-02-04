@@ -130,7 +130,10 @@ bool Renderer::Initialize()
     }
 
     GL_CALL(glCreateBuffers, 1, &m_UBO);
-    GL_CALL(glNamedBufferStorage, m_UBO, sizeof(glm::mat4), glm::value_ptr(m_Camera->GetViewProjectionMatrix()), GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT);
+    UBOData uboData;
+    uboData.viewProjectionMatrix = m_Camera->GetViewProjectionMatrix();
+    uboData.cameraPos = m_Camera->GetPosition();
+    GL_CALL(glNamedBufferStorage, m_UBO, sizeof(UBOData), &uboData, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT);
 
     GL_CALL(glCreateBuffers, 1, &m_VBO);
     GL_CALL(glNamedBufferStorage, m_VBO, sizeof(Vertex) * vertices.size(), vertices.data(), 0);
@@ -147,10 +150,9 @@ bool Renderer::Initialize()
     GL_CALL(glEnableVertexAttribArray, 0);
     GL_CALL(glVertexAttribPointer, 0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), nullptr);
     GL_CALL(glEnableVertexAttribArray, 1);
-    GL_CALL(glVertexAttribPointer, 1, 3, GL_FLOAT, GL_FALSE,sizeof(Vertex), reinterpret_cast<GLvoid*>(sizeof(glm::vec3)));
+    GL_CALL(glVertexAttribPointer, 1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<GLvoid*>(sizeof(glm::vec3)));
     GL_CALL(glEnableVertexAttribArray, 2);
     GL_CALL(glVertexAttribPointer, 2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<GLvoid*>(sizeof(glm::vec3) * 2));
-
     if (CompileShaders() == false) {
         return false;
     }
@@ -163,7 +165,7 @@ bool Renderer::Initialize()
     GL_CALL(glDisableVertexAttribArray, 0);
     GL_CALL(glDisableVertexAttribArray, 1);
 
-    m_UBOData = reinterpret_cast<glm::mat4*>(glMapNamedBufferRange(m_UBO, 0, sizeof(glm::mat4), GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_FLUSH_EXPLICIT_BIT));
+    m_UBOData = reinterpret_cast<UBOData*>(glMapNamedBufferRange(m_UBO, 0, sizeof(UBOData), GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_FLUSH_EXPLICIT_BIT));
 
     return true;
 }
@@ -209,14 +211,16 @@ void Renderer::UpdateViewport(uint32_t width, uint32_t height)
     glViewport(0, 0, m_ViewportWidth, m_ViewportHeight);
     m_Camera->ComputeProjection(m_ViewportWidth, m_ViewportHeight);
 
-    std::memcpy(m_UBOData, glm::value_ptr(m_Camera->GetViewProjectionMatrix()), sizeof(glm::mat4));
-    GL_CALL(glFlushMappedNamedBufferRange, m_UBO, 0, sizeof(glm::mat4));
+    m_UBOData->viewProjectionMatrix = m_Camera->GetViewProjectionMatrix();
+    m_UBOData->cameraPos = m_Camera->GetPosition();
+    GL_CALL(glFlushMappedNamedBufferRange, m_UBO, 0, sizeof(UBOData));
 }
 
 void Renderer::UpdateCamera()
 {
-    std::memcpy(m_UBOData, glm::value_ptr(m_Camera->GetViewProjectionMatrix()), sizeof(glm::mat4));
-    GL_CALL(glFlushMappedNamedBufferRange, m_UBO, 0, sizeof(glm::mat4));
+    m_UBOData->viewProjectionMatrix = m_Camera->GetViewProjectionMatrix();
+    m_UBOData->cameraPos = m_Camera->GetPosition();
+    GL_CALL(glFlushMappedNamedBufferRange, m_UBO, 0, sizeof(UBOData));
 }
 
 END_VISUALIZER_NAMESPACE
